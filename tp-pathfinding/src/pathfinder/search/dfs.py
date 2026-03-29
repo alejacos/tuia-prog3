@@ -20,7 +20,7 @@ class DepthFirstSearch:
 
         #Verificar Test objetivo <---------------------
         if grid.objective_test(root.state):
-            return Solution(root, reached)
+            return Solution(root, expanded)
 
         #Crear la frontera y apilar nodo raiz
         frontier = StackFrontier()
@@ -143,5 +143,3 @@ class DepthFirstSearch:
                     #Apilar el nodo en la frontera
                     frontier.add(son)
 
-
-        return NoSolution(expanded)
