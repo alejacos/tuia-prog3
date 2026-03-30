@@ -43,6 +43,35 @@ class DepthFirstSearch:
             expanded[node.state] = True #Agregamos el nodo
 
             #Aplicar todas las acciones posibles
+            actions = ["right", "left", "up", "down"]
+            for action in actions:
+                if action in grid.actions(node.state):
+                    # Obtenemos el sucesor
+                    successor = grid.result(node.state, action)
+
+                    # Checkeamos que el sucesor no esté en expandidos
+                    if successor not in expanded:
+                        
+                        # Inicializamos el nodo hijo (son)
+                        son = Node(
+                            "",
+                            successor,
+                            cost=node.cost + grid.individual_cost(node.state, action),
+                            parent=node,
+                            action=action,
+                        )
+
+
+                        # Aplicamos el objective test
+                        if grid.objective_test(successor):
+                            return Solution(son, expanded)
+
+                        #Apilar el nodo en la frontera
+                        frontier.add(son)
+
+
+            """
+            #Aplicar todas las acciones posibles
             # Checkear si going "right" es posible
             if "right" in grid.actions(node.state):
                 # Obtenemos el sucesor
@@ -143,3 +172,4 @@ class DepthFirstSearch:
                     #Apilar el nodo en la frontera
                     frontier.add(son)
 
+            """

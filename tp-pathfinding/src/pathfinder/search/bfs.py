@@ -41,6 +41,38 @@ class BreadthFirstSearch:
             node = frontier.remove()
             
             #Aplicar todas las acciones posibles
+            actions = ["right", "left", "up", "down"]
+            for action in actions:
+                if action in grid.actions(node.state):
+                    # Get the successor
+                    successor = grid.result(node.state, action)
+
+                    # Check if the successor is reached
+                    if successor not in reached:
+                        
+                        # Initialize the son node
+                        son = Node(
+                            "",
+                            successor,
+                            cost=node.cost + grid.individual_cost(node.state, action),
+                            parent=node,
+                            action=action,
+                        )
+
+
+                        # Apply objective test
+                        if grid.objective_test(successor):
+                            return Solution(son, reached)
+
+                        # Mark the successor as reached
+                        reached[successor] = True
+                        #Encolar el nodo en la frontera
+                        frontier.add(son)
+
+
+
+
+            """            
             # Checkear si going "right" es posible
             if "right" in grid.actions(node.state):
                 # Get the successor
@@ -149,5 +181,6 @@ class BreadthFirstSearch:
                     #Encolar el nodo en la frontera
                     frontier.add(son)
                     
-            continue
+            #continue
+            """
 
