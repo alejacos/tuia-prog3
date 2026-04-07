@@ -24,6 +24,44 @@ class AStarSearch:
 
         # Initialize frontier with the root node
         # TODO Complete the rest!!
-        # ...
+        frontier = PriorityQueueFrontier()
+        priority = root.cost + root.distance(grid.end)
+        frontier.add(root, priority)
 
-        return NoSolution(reached)
+        #Iterar mientras la frontera no esté vacía
+        while True:
+            if frontier.is_empty():
+                return NoSolution(reached)
+            
+            #Retiro un nodo de la frontera
+            node = frontier.pop()
+
+            #Verificar Test objetivo
+            if grid.objective_test(node.state):
+                return Solution(node, reached)
+
+            #Aplicar todas las acciones posibles <---------------------
+            actions = ["right", "left", "up", "down"]
+            for action in actions:
+                if action in grid.actions(node.state):
+                    # Obtener el succesor  y su costo
+                    successor = grid.result(node.state, action)
+                    cost = node.cost + grid.individual_cost(node.state, action)
+
+                    # Checkear si el sucesor está en alcanzados o si el costo es menor
+                    if successor not in reached or cost < reached[successor]:
+                        # Initialize the son node
+                        son = Node(
+                            "",
+                            successor,
+                            cost=cost,
+                            parent=node,
+                            action=action,
+                        )
+
+                        # Cargar el sucesor como alcanzado con su costo
+                        reached[successor] = cost
+                        #Encolar el nodo en la frontera con su costo
+                        priority = son.cost + son.distance(grid.end)
+                        frontier.add(son, priority)
+        
