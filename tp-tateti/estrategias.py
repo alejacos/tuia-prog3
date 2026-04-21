@@ -34,7 +34,7 @@ def estrategia_aleatoria(tateti: Tateti, estado: List[List[str]]) -> Tuple[int, 
 def minimax_max (tateti: Tateti, estado: List[List[str]])-> int:
     if tateti.test_terminal(estado):
         return tateti.utilidad(estado, JUGADOR_MAX)
-    valor= -10
+    valor= float('-inf')
     for accion in tateti.acciones(estado):
         sucesor = tateti.resultado(estado, accion)
         valor = max(valor, minimax_min(tateti, sucesor))
@@ -43,7 +43,7 @@ def minimax_max (tateti: Tateti, estado: List[List[str]])-> int:
 def minimax_min (tateti: Tateti, estado: List[List[str]])-> int:
     if tateti.test_terminal(estado):
         return tateti.utilidad(estado, JUGADOR_MAX)
-    valor= 10
+    valor= float ('inf')
     for accion in tateti.acciones(estado):
         sucesor = tateti.resultado(estado, accion)
         valor = min(valor, minimax_max(tateti, sucesor))
