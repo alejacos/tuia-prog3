@@ -31,22 +31,28 @@ def estrategia_aleatoria(tateti: Tateti, estado: List[List[str]]) -> Tuple[int, 
     
     return random.choice(acciones_disponibles)
 
-def minimax_max (tateti: Tateti, estado: List[List[str]])-> int:
+def minimax_max (tateti: Tateti, estado: List[List[str]], alfa:int, beta:int)-> int:
     if tateti.test_terminal(estado):
         return tateti.utilidad(estado, JUGADOR_MAX)
     valor= float('-inf')
     for accion in tateti.acciones(estado):
         sucesor = tateti.resultado(estado, accion)
-        valor = max(valor, minimax_min(tateti, sucesor))
+        valor = max(valor, minimax_min(tateti, sucesor, alfa, beta))
+        if valor >= beta:
+            return valor
+        alfa=max(alfa,valor)
     return valor
 
-def minimax_min (tateti: Tateti, estado: List[List[str]])-> int:
+def minimax_min (tateti: Tateti, estado: List[List[str]], alfa:int, beta:int)-> int:
     if tateti.test_terminal(estado):
         return tateti.utilidad(estado, JUGADOR_MAX)
     valor= float ('inf')
     for accion in tateti.acciones(estado):
         sucesor = tateti.resultado(estado, accion)
-        valor = min(valor, minimax_max(tateti, sucesor))
+        valor = min(valor, minimax_max(tateti, sucesor, alfa, beta))
+        if valor <= alfa:
+            return valor
+        beta=min(beta,valor)
     return valor
 
 
@@ -64,23 +70,17 @@ def estrategia_minimax(tateti: Tateti, estado: List[List[str]]) -> Tuple[int, in
     Raises:
         NotImplementedError: Hasta que el alumno implemente el algoritmo
     """
-    # TODO: Implementar algoritmo minimax
-
-    # INSTRUCCIONES:
-    # 1. Eliminar la línea 'raise NotImplementedError...' de abajo
-    # 2. Implementar el algoritmo minimax aquí
-    # 3. La función debe retornar una tupla (fila, columna) con la mejor jugada
 
     if tateti.jugador(estado)== JUGADOR_MAX:
         sucs={}
-        for accion in tateti.acciones(estado):
-            sucs[accion] = minimax_min(tateti, tateti.resultado(estado, accion))
+        for accion in tateti.acciones(tateti.estado_inicial):
+            sucs[accion] = minimax_min(tateti, tateti.resultado(tateti.estado_inicial, accion),float('-inf'), float('inf'))
         return max(sucs, key=sucs.get)
 
     if tateti.jugador(estado)== JUGADOR_MIN:
         sucs={}
-        for accion in tateti.acciones(estado):
-            sucs[accion] = minimax_max(tateti, tateti.resultado(estado, accion))
+        for accion in tateti.acciones(tateti.estado_inicial):
+            sucs[accion] = minimax_max(tateti, tateti.resultado(tateti.estado_inicial, accion), float('-inf'), float('inf'))
         return min(sucs, key=sucs.get)
 
 
