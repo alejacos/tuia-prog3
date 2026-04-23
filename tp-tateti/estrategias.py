@@ -60,7 +60,7 @@ def estrategia_minimax(tateti: Tateti, estado: List[List[str]]) -> Tuple[int, in
     """
     Estrategia minimax: elige la mejor acción usando el algoritmo minimax.
     
-    Args:
+        Args:
         tateti: Instancia de la clase Tateti
         estado: Estado actual del tablero
         
@@ -73,14 +73,14 @@ def estrategia_minimax(tateti: Tateti, estado: List[List[str]]) -> Tuple[int, in
 
     if tateti.jugador(estado)== JUGADOR_MAX:
         sucs={}
-        for accion in tateti.acciones(tateti.estado_inicial):
-            sucs[accion] = minimax_min(tateti, tateti.resultado(tateti.estado_inicial, accion),float('-inf'), float('inf'))
+        for accion in tateti.acciones(estado):
+            sucs[accion] = minimax_min(tateti, tateti.resultado(estado, accion),float('-inf'), float('inf'))
         return max(sucs, key=sucs.get)
 
     if tateti.jugador(estado)== JUGADOR_MIN:
         sucs={}
-        for accion in tateti.acciones(tateti.estado_inicial):
-            sucs[accion] = minimax_max(tateti, tateti.resultado(tateti.estado_inicial, accion), float('-inf'), float('inf'))
+        for accion in tateti.acciones(estado):
+            sucs[accion] = minimax_max(tateti, tateti.resultado(estado, accion), float('-inf'), float('inf'))
         return min(sucs, key=sucs.get)
 
 
